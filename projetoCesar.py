@@ -49,3 +49,43 @@ def visualizar () :
     except FileNotFoundError () :
         print ("Nenhum treino foi adicionado ainda.")
 
+def atualizar () :
+    dataTreino = input ("Digite a data do treino que deseja modificar (dd/mm/aa): ")
+    try :
+        with open(Arquivo_treino, "r") as file:
+            for treino in dataTreino :  
+                if treino["data"] == dataTreino :
+                    resposta = input("Digite S ou N se deseja modificar a Data: ").upper()
+                    match (resposta) :
+                        case "S" :
+                            treino['data'] = input ("Digite a nova data (dd/mm/aa): ")
+                        case "N" :
+                            print ("Data não alterada")
+                    resposta1 = input ("Digite S ou N se deseja modificar a distância ? ").upper()
+                    match (resposta1) :
+                        case "S" :
+                            treino['distancia'] = input ("Digite a nova distância :")
+                        case "N" :
+                            print ("Distância não alterada")
+                    resposta2 = input("Digite S ou N se deseja modificar o tempo : ").upper()
+                    match (resposta2) :
+                        case "S" :
+                            treino["tempo"] = input ("Digite o novo tempo :")
+                        case "N" :
+                            print ("Tempo não alterado")
+                    resposta3 = input ("Digite S ou N se dejesa modificar o local do treino : ").upper()
+                    match (resposta3) :
+                        case "S" :
+                            treino["local"] = input ("Digite o novo local do treino :")
+                        case "N" :
+                            print ("Local não alterado.")
+                    resposta4 = input("Digite S ou N se deseja modificar as condições climaticas do treino: ")
+                    match (resposta4) :
+                        case "S" :
+                            treino["condicoes"] = input ("Digite as novas condições climaticas: ")
+                        case "N" :
+                            print ("Condições não alteradas")
+    except FileNotFoundError():
+        print("Arquivo não encontrado :")
+    except ValueError(resposta2):
+        print("Somente S ou N")
