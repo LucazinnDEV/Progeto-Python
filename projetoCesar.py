@@ -127,3 +127,6 @@ def escolhas_menu () :
             print ("Opção inexistente.")
             print ("Digite de 1 à 8 para acessar as opções.")      
         input("Pressione qualquer tecla para continuar")
+
+if __name__ == "__main__":
+    escolhas_menu()
