@@ -84,3 +84,19 @@ def atualizar () :
         print("Arquivo não encontrado :")
     except ValueError(resposta2):
         print("Somente S ou N")
+
+def filtrar () :
+    escolha = input ("Deseja filtrar por por (1) Distância ou (2) Tempo ?/n:")
+    escolha2 = float (input("Digite o valor do filtro/n : "))
+
+    with open(Arquivo_treino, "r") as file:
+        for t in Arquivo_treino :
+            data, distancia, tempo, local, condicoes = Arquivo_treino.sptrip().split(',')
+            distancia = float (distancia)
+            tempoH, tempoM, = map(int, tempo.split(":"))
+            tempoT = tempoH * 60 + tempoM
+
+            if escolha == "1" and distancia >= escolha2 :
+                print (f"Data: {data}, Distância 2: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
+            elif escolha2 == "2" and tempoT <= escolha2 :
+                print (f"Data: {data}, Distância: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
