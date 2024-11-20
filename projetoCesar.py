@@ -33,3 +33,13 @@ def adicionar () :
         file.write(treino)
 
     print ("Treino adicionado! ")
+
+def visualizar () :
+    print ("==== Treinos ====")
+    try:
+        with open(Arquivo_treino, "r") as file:
+            for linha in file:
+                data, distancia, tempo, local, condicoes = linha.strip().split(',')
+                print(f"{data}, {distancia} km, {tempo}, {local}, {condicoes}")
+    except FileNotFoundError:
+        print("Nenhum treino cadastrado ainda.")
