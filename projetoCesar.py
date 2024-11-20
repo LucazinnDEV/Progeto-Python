@@ -22,3 +22,17 @@ def menu () :
 
 menu()
 
+def adicionar () :
+    data = input ("Digite a data do treino (dd/mm/aa) : ")
+    distancia = input ("Digite a distãncia em metros : ")
+    tempo = input ("Digite o tempo em minutos : ")
+    local = input ("Digite o lcal do treino :" )
+    condicoes = input ("Informe as condições climaticas da data do treino: ")
+    treino = {"Data": data, "Distancia": distancia, "Tempo": tempo, "Local": local, "Condições": condicoes}
+
+    print(treino)
+
+    with open("C:\\Users\\lukin\\Desktop\\estudos\\AulasFacul\\Python\\projetoPython\\teste2.txt", "a") as file:
+        file.write(f"{treino}\n")
+    print ("Treino adicionado! ")
+
