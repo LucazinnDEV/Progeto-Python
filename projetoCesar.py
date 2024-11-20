@@ -101,6 +101,30 @@ def filtrar () :
             elif escolha2 == "2" and tempoT <= escolha2 :
                 print (f"Data: {data}, Distância: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
 
+def excluir () :
+    try:
+        with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
+            treinos = file.readlines()
+        if not treinos:
+            print('Nenhum treino encontrado!')
+            return
+
+        dataparaexcluir = input('Digite uma data de treino que deseja excluir (dd/mm/aa):  ').strip()
+        treinos_atualizados = [treino for treino in treinos if dataparaexcluir not in treino]
+
+        if len (treinos) == len(treinos_atualizados):
+            print(f'Nenhum treino encontrado com a data: {dataparaexcluir}')
+            return
+
+        with open(Arquivo_treino, 'w', encoding='utf8') as file:
+            file.writelines(treinos_atualizados)
+
+        print(f'Treino com a data: {dataparaexcluir} excluído com sucesso!')
+
+    except FileNotFoundError:
+        print('Arquivo de treino não encontrado.')
+    except ValueError:
+        print('Erro inesperado ao processar o arquivo.')
 
 def escolhas_menu () :
     while True:
