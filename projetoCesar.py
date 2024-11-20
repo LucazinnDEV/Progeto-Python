@@ -2,7 +2,7 @@ import os
 
 Arquivo_treino = 'Treino.txt'
 
-def menu () :
+def menu ():
     limpaMenu()
     print ("==== Bem vindo ao menu! ====")
     print ("1 - Adicionar treino.") #feito
@@ -15,3 +15,6 @@ def menu () :
     print ("8 - Sair.") #faltando
     
     return input("Escolha uma opção: ")
+
+def limpaMenu () :
+    os.system('cls' if os.name == 'nt' else 'clear')
