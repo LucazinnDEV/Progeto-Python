@@ -36,3 +36,16 @@ def adicionar () :
         file.write(f"{treino}\n")
     print ("Treino adicionado! ")
 
+def visualizar () :
+    print ("==== Treinos ====")
+    try :
+        with open(Arquivo_treino, "r") as file:
+            for t in Arquivo_treino :
+                print (f"Data :{t['data']}")
+                print (f"Distância : {t['distancia']}")
+                print (f"Tempo : {t['tempo']}")
+                print (f"Local : {t['local']}")
+                print (f"Condições : {t['condicoes']}")
+    except FileNotFoundError () :
+        print ("Nenhum treino foi adicionado ainda.")
+
