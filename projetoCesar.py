@@ -100,3 +100,30 @@ def filtrar () :
                 print (f"Data: {data}, Distância 2: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
             elif escolha2 == "2" and tempoT <= escolha2 :
                 print (f"Data: {data}, Distância: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
+
+
+def escolhas_menu () :
+    while True:
+        try: 
+            opcao = menu()
+            if opcao == '1' :
+                adicionar()
+            elif opcao == '2' :
+                visualizar()
+            elif opcao == '3' :
+                atualizar()
+            elif opcao == '4' :
+                filtrar()
+            elif opcao == '5' :
+                excluir()
+            elif opcao == '6' :
+                metas()
+            elif opcao == '7' :
+                sugestoes()
+            elif opcao == '8' :
+                print("Saindo do programa...")
+                break
+        except ValueError :
+            print ("Opção inexistente.")
+            print ("Digite de 1 à 8 para acessar as opções.")      
+        input("Pressione qualquer tecla para continuar")
