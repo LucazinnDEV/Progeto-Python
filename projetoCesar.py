@@ -25,19 +25,24 @@ def menu () :
     
     return input("Escolha uma opção: ")
 
-def adicionar () :
-    data = input ("Digite a data do treino (dd/mm/aa) : ")
+def adicionar():
+    tipo = input("Digite o tipo (treino ou competição): ").strip().lower()
+    while tipo not in ["treino", "competição"]:
+        print("Opção inválida! Por favor, escolha 'treino' ou 'competição'.")
+        tipo = input("Digite o tipo (treino ou competição): ").strip().lower()
+
+    data = input("Digite a data do treino ou competição (dd/mm/aa): ")
     data_treino.append(data)
-    distancia = input ("Digite a distãncia em quilômetros : ")
-    tempo = input ("Digite o tempo em minutos : ")
-    local = input ("Digite o local do treino : ")
-    condicoes = input ("Informe as condições climaticas da data do treino: ")
+    distancia = input("Digite a distância em quilômetros: ")
+    tempo = input("Digite o tempo em minutos: ")
+    local = input("Digite o local do treino ou competição: ")
+    condicoes = input("Informe as condições climáticas da data: ")
     nova_distancia = float(distancia)
     novo_tempo = int(tempo)
     vm_ind = float(nova_distancia/(novo_tempo/60))
     lista_vm.append(vm_ind)
     
-    treino = f"Data: {data}, Distância: {distancia}km, Tempo: {tempo} min, Local: {local}, Condições: {condicoes}, Velocidade Média: {vm_ind:.2f} km/h \n"
+    treino = f"Tipo: {tipo}, Data: {data}, Distância: {distancia}km, Tempo: {tempo} min, Local: {local}, Condições: {condicoes}, Velocidade Média: {vm_ind:.2f} km/h \n"
     print(treino)
 
     with open(Arquivo_treino, "a" ,encoding = "utf8") as file:
@@ -46,8 +51,7 @@ def adicionar () :
     with open(Arquivo_treino, "r", encoding="utf8") as file:
         num_linha = len(file.readlines())
 
-    print(f"Treino adicionado! Agora existem {num_linha} treinos registrados.\n")
-
+    print(f"Treino ou competição adicionado! Agora existem {num_linha} registros.\n")
 def visualizar () :
     print ("==== Treinos ====")
     try:
