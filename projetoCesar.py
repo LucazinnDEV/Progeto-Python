@@ -241,7 +241,7 @@ def visualizar_metas():
 
         for linha in linhas:
             try:
-                if "Meta de distância" in linha and "meta de tempo" in linha:
+                if "meta de distância" in linha and "meta de tempo" in linha:
                     partes = linha.split("meta de distância:")[1].split("meta de tempo:")
                     meta_distancia = partes[0].strip().replace("km", "").strip()
                     meta_tempo = partes[1].strip().replace("min", "").strip()
