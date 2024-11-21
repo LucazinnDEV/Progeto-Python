@@ -1,6 +1,10 @@
 import os
+import random
 
 Arquivo_treino = 'Treino.txt'
+
+data_treino = []
+lista_vm = []
 
 def menu ():
     limpaMenu()
@@ -143,6 +147,17 @@ def metas () :
     print(metas_treinos)
 
     input("\nPressione qualquer tecla para retornar ao menu...")
+
+def sugestoes () :
+    
+    treinos_principais = [
+        "Intervalados: 1 minuto rápido + 2 minutos leve (repetir 6 vezes)",
+        "Corrida contínua: Ritmo moderado por 20 minutos",
+        "Tiros: 400 metros forte x 8, descanso de 2 minuto entre séries",
+        "Corrida longa: 5 km em ritmo confortável",
+        "Progressivo: Comece lento e aumente o ritmo a cada quilômetro até terminar rápido"
+    ]
+    print(random.choice(treinos_principais))
 
 def escolhas_menu () :
     while True:
