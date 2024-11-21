@@ -126,6 +126,24 @@ def excluir () :
     except ValueError:
         print('Erro inesperado ao processar o arquivo.')
 
+def metas () :
+    print("==== Definir Metas ====")
+    
+    meta_distancia = input("Digite para definir a meta pessoal de distância em km: ")
+    meta_tempo = input("Digite para definir a meta pessoal de tempo em minutos : ")
+
+    metas_treinos = f"meta de distância : {meta_distancia} km meta de tempo {meta_tempo} min"
+
+    metas_arquivo = 'Metas.txt'
+
+    with open (metas_arquivo , "w" ,encoding = "utf8") as file :
+        file.write(metas_treinos)
+
+    print("\n==== Metas semanais definidas com sucesso ! ====")
+    print(metas_treinos)
+
+    input("\nPressione qualquer tecla para retornar ao menu...")
+
 def escolhas_menu () :
     while True:
         try: 
