@@ -2,41 +2,48 @@ import os
 import random   
 
 Arquivo_treino = 'Treino.txt'
+metas_arquivo = 'Metas.txt'
 
 data_treino = []
 lista_vm = []
 
-def menu () :
-    limpaMenu()
-    print ("==== Bem vindo ao menu! ====")
-    print ("1 - Adicionar treino.") #feito
-    print ("2 - Visualisar treinos.") #feito
-    print ("3 - Atualizar treinos.") #feito
-    print ("4 - Filtrar treino.") #feito
-    print ("5 - Excluir treinos.") #faltando
-    print ("6 - Definir metas.") #faltando
-    print ("7 - Sujestões de treinos.") #faltando
-    print ("8 - Sair.") #feito
-    print ("9 - Visualizar velocidade média.") #feito
-    
-    return input("Escolha uma opção: ")
-
 def limpaMenu () :
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def adicionar () :
-    data = input ("Digite a data do treino (dd/mm/aa) : ")
+def menu () :
+    limpaMenu()
+    print ("==== Bem vindo ao menu! ====")
+    print ("1 - Adicionar treino.") 
+    print ("2 - Visualizar treinos/competição.") 
+    print ("3 - Definir metas.") 
+    print ("4 - Atualizar treinos.") 
+    print ("5 - Filtrar treino.") 
+    print ("6 - Excluir treinos.") 
+    print ("7 - Visualizar Metas.") 
+    print ("8 - Sugestões de treinos.") 
+    print ("9 - Visualizar velocidade média dos treinos.") 
+    print ("0 - Sair.") 
+    
+    return input("Escolha uma opção: ")
+
+def adicionar():
+    tipo = input("Digite o tipo (treino ou competição): ").strip().lower()
+    while tipo not in ["treino", "competição"]:
+        print("Opção inválida! Por favor, escolha 'treino' ou 'competição'.")
+        tipo = input("Digite o tipo (treino ou competição): ").strip().lower()
+
+    data = input("Digite a data do treino ou competição (dd/mm/aa): ")
     data_treino.append(data)
-    distancia = input ("Digite a distãncia em quilômetros : ")
-    tempo = input ("Digite o tempo em minutos : ")
-    local = input ("Digite o local do treino : ")
-    condicoes = input ("Informe as condições climaticas da data do treino: ")
+    distancia = input("Digite a distância em quilômetros: ")
+    tempo = input("Digite o tempo em minutos: ")
+    local = input("Digite o local do treino ou competição: ")
+    condicoes = input("Informe as condições climáticas da data: ")
     nova_distancia = float(distancia)
     novo_tempo = int(tempo)
     vm_ind = float(nova_distancia/(novo_tempo/60))
     lista_vm.append(vm_ind)
     
-    treino = f"Data: {data}, Distância: {distancia}km, Tempo: {tempo} min, Local: {local}, Condições: {condicoes}, Velocidade Média: {vm_ind:.2f} km/h \n"
+    treino = f"Tipo: {tipo}, Data: {data}, Distância: {distancia}km, Tempo: {tempo} min, Local: {local}, Condições: {condicoes}, Velocidade Média: {vm_ind:.2f} km/h \n"
     print(treino)
 
     with open(Arquivo_treino, "a" ,encoding = "utf8") as file:
@@ -45,124 +52,210 @@ def adicionar () :
     with open(Arquivo_treino, "r", encoding="utf8") as file:
         num_linha = len(file.readlines())
 
-    print(f"Treino adicionado! Agora existem {num_linha} treinos registrados.\n")
+    print(f"Treino ou competição adicionado! Agora existem {num_linha} registros.\n")
 
-def visualizar () :
-    print ("==== Treinos ====")
+def visualizar():
+    tipo = input("Você deseja visualizar treino ou competição ").strip().lower()
+    while tipo not in ["treino", "competição"]:
+        print("Opção inválida! Por favor, escolha 'treino' ou 'competição'.")
+        tipo = input("Você deseja visualizar treinos ou competições? ").strip().lower()
+
+    print(f"==== {tipo.capitalize()} ====")
     try:
-        with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
+        with open(Arquivo_treino, "r", encoding="utf8") as file:
             linhas = file.readlines()
-            if not linhas:  
-                print("Nenhum treino cadastrado ainda.")
+            if not linhas:
+                print("Nenhum treino ou competição cadastrado ainda.")
             else:
-              for linha in linhas:
-                    try:
-                        data, distancia, tempo, local, condicoes, vm_ind = linha.strip().split(',')
-                        print(f"Data: {data}, Distância: {distancia} km, Tempo: {tempo}, Local: {local}, Condições: {condicoes}, Velocidade Média: {vm_ind} km/h ")
-                    except ValueError:
-                        print("Erro no formato dos dados de um treino. Verifique o arquivo.")
+                for linha in linhas:
+                    if tipo in linha: 
+                        try:
+                            dados = linha.strip().split(', ')
+                            print(", ".join(dados))
+                        except ValueError:
+                            print("Erro no formato dos dados de um treino ou competição. Verifique o arquivo.")
     except FileNotFoundError:
-        print("Nenhum treino cadastrado ainda.")
+        print("Nenhum treino ou competição cadastrado ainda.")
 
-def atualizar () :
-    dataTreino = input ("Digite a data do treino que deseja modificar (dd/mm/aa): ")
-    try :
-        with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
-            for treino in dataTreino :  
-                if treino["data"] == dataTreino :
-                    resposta = input("Digite S ou N caso queira modificar a Data: ").upper()
-                    match (resposta) :
-                        case "S" :
-                            treino['data'] = input ("Digite a nova data (dd/mm/aa): ")
-                        case "N" :
-                            print ("Data não alterada")
-                    resposta1 = input ("Digite S ou N se deseja modificar a distância ? ").upper()
-                    match (resposta1) :
-                        case "S" :
-                            treino['distancia'] = input ("Digite a nova distância :")
-                        case "N" :
-                            print ("Distância não alterada")
-                    resposta2 = input("Digite S ou N se deseja modificar o tempo : ").upper()
-                    match (resposta2) :
-                        case "S" :
-                            treino["tempo"] = input ("Digite o novo tempo :")
-                        case "N" :
-                            print ("Tempo não alterado")
-                    resposta3 = input ("Digite S ou N se dejesa modificar o local do treino : ").upper()
-                    match (resposta3) :
-                        case "S" :
-                            treino["local"] = input ("Digite o novo local do treino :")
-                        case "N" :
-                            print ("Local não alterado.")
-                    resposta4 = input("Digite S ou N se deseja modificar as condições climaticas do treino: ")
-                    match (resposta4) :
-                        case "S" :
-                            treino["condicoes"] = input ("Digite as novas condições climaticas: ")
-                        case "N" :
-                            print ("Condições não alteradas")
-    except FileNotFoundError():
-        print("Arquivo não encontrado :")
-    except ValueError(resposta2):
-        print("Somente S ou N")
+def atualizar():
+    tipo = input("Digite o tipo (treino ou competição) que deseja modificar: ").strip().lower()
+    while tipo not in ["treino", "competição"]:
+        print("Opção inválida! Por favor, escolha 'treino' ou 'competição'.")
+        tipo = input("Digite o tipo (treino ou competição) que deseja modificar: ").strip().lower()
 
-def filtrar () :
-    escolha = input ("Deseja filtrar por por (1) Distância ou (2) Tempo ?/n:")
-    escolha2 = float (input("Digite o valor do filtro/n : "))
-
-    with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
-        for t in Arquivo_treino :
-            data, distancia, tempo, local, condicoes = Arquivo_treino.strip().split(',')
-            distancia = float (distancia)
-            tempoH, tempoM, = map(int, tempo.split(":"))
-            tempoT = tempoH * 60 + tempoM
-
-            if escolha == "1" and distancia >= escolha2 :
-                print (f"Data: {data}, Distância: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
-            elif escolha2 == "2" and tempoT <= escolha2 :
-                print (f"Data: {data}, Distância: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
-
-def excluir () :
+    dataTreino = input(f"Digite a data do {tipo} que deseja modificar (dd/mm/aa): ").strip()
+    
     try:
-        with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
+        with open(Arquivo_treino, "r", encoding="utf8") as file:
             treinos = file.readlines()
-        if not treinos:
-            print('Nenhum treino encontrado!')
+
+        treino_encontrado = False
+        for i, treino in enumerate(treinos):
+            if dataTreino in treino and tipo in treino:
+                treino_encontrado = True
+                print(f"\n{tipo.capitalize()} encontrado: {treino.strip()}")
+             
+                nova_distancia = input("Digite a nova distância (ou pressione Enter para manter): ").strip()
+                novo_tempo = input("Digite o novo tempo em minutos (ou pressione Enter para manter): ").strip()
+                novo_local = input("Digite o novo local (ou pressione Enter para manter): ").strip()
+                novas_condicoes = input("Digite as novas condições climáticas (ou pressione Enter para manter): ").strip()
+
+                campos = treino.strip().split(", ")
+                campos_dict = {campo.split(":")[0].strip(): campo.split(":")[1].strip() for campo in campos}
+
+                campos_dict["Distância"] = nova_distancia if nova_distancia else campos_dict["Distância"]
+                campos_dict["Tempo"] = novo_tempo if novo_tempo else campos_dict["Tempo"]
+                campos_dict["Local"] = novo_local if novo_local else campos_dict["Local"]
+                campos_dict["Condições"] = novas_condicoes if novas_condicoes else campos_dict["Condições"]
+
+                nova_vm = float(campos_dict["Distância"]) / (float(campos_dict["Tempo"]) / 60)
+                campos_dict["Velocidade Média"] = f"{nova_vm:.2f} km/h"
+
+                treinos[i] = ", ".join([f"{chave}: {valor}" for chave, valor in campos_dict.items()]) + "\n"
+                print("\nRegistro atualizado com sucesso!")
+                break
+
+        if not treino_encontrado:
+            print(f"{tipo.capitalize()} com a data fornecida não encontrado.")
+
+        with open(Arquivo_treino, "w", encoding="utf8") as file:
+            file.writelines(treinos)
+
+    except FileNotFoundError:
+        print("Arquivo de treino não encontrado.")
+    except ValueError:
+        print("Erro ao processar os dados. Verifique os valores inseridos.")
+
+def filtrar():
+    print("\n==== Filtrar Treinos ====")
+    escolha = input("Deseja filtrar por (1) Distância ou (2) Tempo? Digite o número correspondente: ")
+
+    try:
+        filtro = float(input("Digite o valor do filtro (em km ou minutos): "))
+
+        with open(Arquivo_treino, "r", encoding="utf8") as file:
+            registros = file.readlines()
+
+        if not registros:
+            print("Nenhum treino ou competição registrado para filtrar.")
+            return
+
+        print("\nTreinos filtrados:")
+        encontrou = False
+
+        for linha in registros:
+            try:
+                if "treino" not in linha.lower():
+                    continue
+                
+                dados = linha.strip().split(", ")
+                tipo = dados[0].split(": ")[1]
+                distancia = dados[2].split(": ")[1].replace("km", "").strip()
+                tempo = dados[3].split(": ")[1].replace("min", "").strip()
+
+                distancia = float(distancia)
+                tempo = int(tempo)
+
+                if escolha == "1" and distancia >= filtro:
+                    print(linha.strip())
+                    encontrou = True
+                elif escolha == "2" and tempo <= filtro:
+                    print(linha.strip())
+                    encontrou = True
+            except (IndexError, ValueError):
+                print("Erro ao processar os dados do treino. Verifique o formato do arquivo.")
+        
+        if not encontrou:
+            print("Nenhum treino encontrado com os critérios fornecidos.")
+    except ValueError:
+        print("Por favor, insira um valor numérico válido para o filtro.")
+
+def excluir():
+    tipo = input("Você deseja excluir um treino ou uma competição? ").strip().lower()
+    while tipo not in ["treino", "competição"]:
+        print("Opção inválida! Por favor, escolha 'treino' ou 'competição'.")
+        tipo = input("Você deseja excluir um treino ou uma competição? ").strip().lower()
+
+    try:
+        with open(Arquivo_treino, "r", encoding="utf8") as file:
+            registros = file.readlines()
+        
+        if not registros:
+            print('Nenhum treino ou competição encontrado!')
             return
         
-        dataparaexcluir = input('Digite uma data de treino que deseja excluir (dd/mm/aa):  ').strip()
-        treinos_atualizados = [treino for treino in treinos if dataparaexcluir not in treino]
+        dataparaexcluir = input(f'Digite a data de {tipo} que deseja excluir (dd/mm/aa): ').strip()
+        registros_atualizados = [registro for registro in registros if dataparaexcluir not in registro or tipo not in registro]
 
-        if len (treinos) == len(treinos_atualizados):
-            print(f'Nenhum treino encontrado com a data: {dataparaexcluir}')
+        if len(registros) == len(registros_atualizados):
+            print(f'Nenhum {tipo} encontrado com a data: {dataparaexcluir}')
             return
         
         with open(Arquivo_treino, 'w', encoding='utf8') as file:
-            file.writelines(treinos_atualizados)
+            file.writelines(registros_atualizados)
         
-        print(f'Treino com a data: {dataparaexcluir} excluído com sucesso!')
-    
+        print(f'{tipo.capitalize()} com a data: {dataparaexcluir} excluído com sucesso!')
+
     except FileNotFoundError:
-        print('Arquivo de treino não encontrado.')
+        print('Arquivo de treino ou competição não encontrado.')
     except ValueError:
         print('Erro inesperado ao processar o arquivo.')
 
-def metas () :
-    print("==== Definir Metas ====")
+def metas():
+    print("\n==== Definir Metas ====")
     
-    meta_distancia = input("Digite para definir a meta pessoal de distância em km: ")
-    meta_tempo = input("Digite para definir a meta pessoal de tempo em minutos : ")
+    try:
+        meta_distancia = input("Digite a meta pessoal de distância em km: ").strip()
+        while not meta_distancia.replace('.', '', 1).isdigit():
+            print("Por favor, insira um valor numérico válido.")
+            meta_distancia = input("Digite a meta pessoal de distância em km: ").strip()
 
-    metas_treinos = f"meta de distância : {meta_distancia} km meta de tempo {meta_tempo} min"
+        meta_tempo = input("Digite a meta pessoal de tempo em minutos: ").strip()
+        while not meta_tempo.isdigit():
+            print("Por favor, insira um valor numérico válido.")
+            meta_tempo = input("Digite a meta pessoal de tempo em minutos: ").strip()
 
-    metas_arquivo = 'Metas.txt'
+        metas_treinos = f"meta de distância: {meta_distancia} km meta de tempo: {meta_tempo} min"
 
-    with open (metas_arquivo , "w" ,encoding = "utf8") as file :
-        file.write(metas_treinos)
+        with open(metas_arquivo, "w", encoding="utf8") as file:
+            file.write(metas_treinos)
 
-    print("\n==== Metas semanais definidas com sucesso ! ====")
-    print(metas_treinos)
+        print("\n==== Metas definidas com sucesso! ====")
+        print(f"- Meta de distância: {meta_distancia} km")
+        print(f"- Meta de tempo: {meta_tempo} min")
+
+    except Exception as e:
+        print(f"Erro inesperado ao definir metas: {e}")
 
     input("\nPressione qualquer tecla para retornar ao menu...")
+
+def visualizar_metas():
+    print("\n==== Metas ====")
+    try:
+        with open(metas_arquivo, "r", encoding="utf8") as file:
+            linhas = file.readlines()
+
+        if not linhas:
+            print("Nenhuma meta cadastrada ainda.")
+            return
+
+        for linha in linhas:
+            try:
+                if "Meta de distância" in linha and "meta de tempo" in linha:
+                    partes = linha.split("meta de distância:")[1].split("meta de tempo:")
+                    meta_distancia = partes[0].strip().replace("km", "").strip()
+                    meta_tempo = partes[1].strip().replace("min", "").strip()
+
+                    print(f"- Meta de distância: {meta_distancia} km")
+                    print(f"- Meta de tempo: {meta_tempo} min\n")
+                else:
+                    print(f"Erro: Formato inesperado na linha: {linha.strip()}")
+            except (IndexError, ValueError):
+                print(f"Erro ao processar a linha: {linha.strip()}. Verifique o arquivo.")
+    except FileNotFoundError:
+        print("Arquivo de metas não encontrado.")
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
 
 def sugestoes () :
     
@@ -175,14 +268,30 @@ def sugestoes () :
     ]
     print(random.choice(treinos_principais))
 
-def velocidade () :
-    if not lista_vm: 
-        print("\nNenhuma velocidade média registrada ainda.")
-        return
-    
-    media_geral = sum(lista_vm) / len(lista_vm)
-    print(f"Velocidade média geral: {media_geral:.2f} km/h\n")
-    
+def velocidade():
+    try:
+        with open(Arquivo_treino, "r", encoding="utf8") as file:
+            linhas = file.readlines()
+
+        velocidades = []
+        for linha in linhas:
+            if "Tipo: treino" in linha:
+                try:
+                    velocidade = float(linha.split("Velocidade Média: ")[1].replace(" km/h", "").strip())
+                    velocidades.append(velocidade)
+                except (IndexError, ValueError):
+                    print(f"Erro ao processar a linha: {linha.strip()}. Ignorando.")
+        
+        if not velocidades:
+            print("\nNenhuma Velocidade Média registrada para treinos.")
+            return
+
+        media_geral = sum(velocidades) / len(velocidades)
+        print(f"\nVelocidade média geral dos treinos: {media_geral:.2f} km/h\n")
+    except FileNotFoundError:
+        print("\nArquivo de treinos e competições não encontrado.")
+    except Exception as e:
+        print(f"\nErro inesperado: {e}")
 
 def escolhas_menu () :  
     while True:
@@ -192,19 +301,21 @@ def escolhas_menu () :
                 adicionar()
             elif opcao == '2' :
                 visualizar()
-            elif opcao == '3' :
-                atualizar()
             elif opcao == '4' :
-                filtrar()
+                atualizar()
             elif opcao == '5' :
-                excluir()
+                filtrar()
             elif opcao == '6' :
+                excluir()
+            elif opcao == '3' :
                 metas()
-            elif opcao == '7' :
+            elif opcao == '8' :
                 sugestoes()
             elif opcao == '9':
                 velocidade()    
-            elif opcao == '8' :
+            elif opcao == '7' :
+                visualizar_metas ()
+            elif opcao == '0' :
                 print("Saindo do programa...")
                 os.system("exit")
                 break
