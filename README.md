@@ -12,3 +12,12 @@ digitando o número correspondente e pressione Enter.
 - Receber sugestões de treinos aleatórios;
 - Visualizar a velocidade média dos treinos.
 
+# Restrições Gerais / Limitações
+1. O sistema só suporta arquivos de texto (.txt) para salvar os dados.
+2. Todas as entradas devem ser fornecidas no formato correto. Por exemplo:
+- Data: dd/mm/aa
+- Distância: número em quilômetros
+- Tempo: número em minutos
+3. O sistema não possui interface gráfica e funciona apenas no terminal.
+4. Caso o arquivo de treino seja alterado manualmente, erros de leitura podem ocorrer.
+
