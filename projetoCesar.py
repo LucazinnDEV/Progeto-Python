@@ -52,36 +52,47 @@ def adicionar():
         num_linha = len(file.readlines())
 
     print(f"Treino ou competição adicionado! Agora existem {num_linha} registros.\n")
-def visualizar () :
-    print ("==== Treinos ====")
+
+def visualizar():
+    tipo = input("Você deseja visualizar treino ou competição ").strip().lower()
+    while tipo not in ["treino", "competição"]:
+        print("Opção inválida! Por favor, escolha 'treino' ou 'competição'.")
+        tipo = input("Você deseja visualizar treinos ou competições? ").strip().lower()
+
+    print(f"==== {tipo.capitalize()} ====")
     try:
-        with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
+        with open(Arquivo_treino, "r", encoding="utf8") as file:
             linhas = file.readlines()
-            if not linhas:  
-                print("Nenhum treino cadastrado ainda.")
+            if not linhas:
+                print("Nenhum treino ou competição cadastrado ainda.")
             else:
-              for linha in linhas:
-                    try:
-                        data, distancia, tempo, local, condicoes, vm_ind = linha.strip().split(',')
-                        print(f"Data: {data}, Distância: {distancia} km, Tempo: {tempo}, Local: {local}, Condições: {condicoes}, Velocidade Média: {vm_ind} ")
-                    except ValueError:
-                        print("Erro no formato dos dados de um treino. Verifique o arquivo.")
+                for linha in linhas:
+                    if tipo in linha: 
+                        try:
+                            dados = linha.strip().split(', ')
+                            print(", ".join(dados))
+                        except ValueError:
+                            print("Erro no formato dos dados de um treino ou competição. Verifique o arquivo.")
     except FileNotFoundError:
-        print("Nenhum treino cadastrado ainda.")
+        print("Nenhum treino ou competição cadastrado ainda.")
 
 def atualizar():
-    dataTreino = input("Digite a data do treino que deseja modificar (dd/mm/aa): ").strip()
+    tipo = input("Digite o tipo (treino ou competição) que deseja modificar: ").strip().lower()
+    while tipo not in ["treino", "competição"]:
+        print("Opção inválida! Por favor, escolha 'treino' ou 'competição'.")
+        tipo = input("Digite o tipo (treino ou competição) que deseja modificar: ").strip().lower()
+
+    dataTreino = input(f"Digite a data do {tipo} que deseja modificar (dd/mm/aa): ").strip()
     
     try:
-
         with open(Arquivo_treino, "r", encoding="utf8") as file:
             treinos = file.readlines()
 
         treino_encontrado = False
         for i, treino in enumerate(treinos):
-            if dataTreino in treino:
+            if dataTreino in treino and tipo in treino:
                 treino_encontrado = True
-                print(f"\nTreino encontrado: {treino.strip()}")
+                print(f"\n{tipo.capitalize()} encontrado: {treino.strip()}")
              
                 nova_distancia = input("Digite a nova distância (ou pressione Enter para manter): ").strip()
                 novo_tempo = input("Digite o novo tempo em minutos (ou pressione Enter para manter): ").strip()
@@ -100,11 +111,11 @@ def atualizar():
                 campos_dict["Velocidade Média"] = f"{nova_vm:.2f} km/h"
 
                 treinos[i] = ", ".join([f"{chave}: {valor}" for chave, valor in campos_dict.items()]) + "\n"
-                print("\nTreino atualizado com sucesso!")
+                print("\nRegistro atualizado com sucesso!")
                 break
 
         if not treino_encontrado:
-            print("Treino com a data fornecida não encontrado.")
+            print(f"{tipo.capitalize()} com a data fornecida não encontrado.")
 
         with open(Arquivo_treino, "w", encoding="utf8") as file:
             file.writelines(treinos)
@@ -113,7 +124,6 @@ def atualizar():
         print("Arquivo de treino não encontrado.")
     except ValueError:
         print("Erro ao processar os dados. Verifique os valores inseridos.")
-
 def filtrar():
     print("\n==== Filtrar Treinos ====")
     escolha = input("Deseja filtrar por (1) Distância ou (2) Tempo? Digite o número correspondente: ")
