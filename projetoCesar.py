@@ -21,6 +21,7 @@ def menu () :
     print ("6 - Definir metas.") #faltando
     print ("7 - Sujestões de treinos.") #faltando
     print ("8 - Sair.") #feito
+    print ("9 - Visualizar velocidade média dos treinos.") #feito
     
     return input("Escolha uma opção: ")
 
@@ -219,7 +220,9 @@ def escolhas_menu () :
             elif opcao == '6' :
                 metas()
             elif opcao == '7' :
-                sugestoes()            
+                sugestoes()
+            elif opcao == '9':
+                velocidade()    
             elif opcao == '8' :
                 print("Saindo do programa...")
                 os.system("exit")
