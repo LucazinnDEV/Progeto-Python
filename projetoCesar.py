@@ -156,10 +156,10 @@ def filtrar():
                 distancia = float(distancia)
                 tempo = int(tempo)
 
-                if escolha == "1" and distancia >= filtro:
+                if escolha == "1" and distancia == filtro:
                     print(linha.strip())
                     encontrou = True
-                elif escolha == "2" and tempo <= filtro:
+                elif escolha == "2" and tempo == filtro:
                     print(linha.strip())
                     encontrou = True
             except (IndexError, ValueError):
