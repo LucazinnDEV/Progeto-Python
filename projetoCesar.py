@@ -203,14 +203,30 @@ def sugestoes () :
     ]
     print(random.choice(treinos_principais))
 
-def velocidade () :
-    if not lista_vm: 
-        print("\nNenhuma velocidade média registrada ainda.")
-        return
-    
-    media_geral = sum(lista_vm) / len(lista_vm)
-    print(f"Velocidade média geral: {media_geral:.2f} km/h\n")
-    
+def velocidade():
+    try:
+        with open(Arquivo_treino, "r", encoding="utf8") as file:
+            linhas = file.readlines()
+
+        velocidades = []
+        for linha in linhas:
+            if "Tipo: treino" in linha:
+                try:
+                    velocidade = float(linha.split("Velocidade Média: ")[1].replace(" km/h", "").strip())
+                    velocidades.append(velocidade)
+                except (IndexError, ValueError):
+                    print(f"Erro ao processar a linha: {linha.strip()}. Ignorando.")
+        
+        if not velocidades:
+            print("\nNenhuma Velocidade Média registrada para treinos.")
+            return
+
+        media_geral = sum(velocidades) / len(velocidades)
+        print(f"\nVelocidade média geral dos treinos: {media_geral:.2f} km/h\n")
+    except FileNotFoundError:
+        print("\nArquivo de treinos e competições não encontrado.")
+    except Exception as e:
+        print(f"\nErro inesperado: {e}")
 
 def escolhas_menu () :  
     while True:
