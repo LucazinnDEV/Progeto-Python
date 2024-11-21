@@ -111,7 +111,7 @@ def filtrar () :
 
     with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
         for t in Arquivo_treino :
-            data, distancia, tempo, local, condicoes = Arquivo_treino.sptrip().split(',')
+            data, distancia, tempo, local, condicoes = Arquivo_treino.strip().split(',')
             distancia = float (distancia)
             tempoH, tempoM, = map(int, tempo.split(":"))
             tempoT = tempoH * 60 + tempoM
