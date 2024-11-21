@@ -42,3 +42,7 @@ digitando o número correspondente e pressione Enter.
 - Receba sugestões aleatórias para variar sua rotina.
 9. Velocidade Média dos Treinos :
 - Calcule a velocidade média geral dos treinos registrados.
+- 
+# Fluxograma:
+https://miro.com/app/board/uXjVLCbshbU=/?share_link_id=119272555073
+
