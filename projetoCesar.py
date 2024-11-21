@@ -159,6 +159,14 @@ def sugestoes () :
     ]
     print(random.choice(treinos_principais))
 
+def velocidade () :
+    if not lista_vm: 
+        print("\nNenhuma velocidade média registrada ainda.")
+        return
+    
+    media_geral = sum(lista_vm) / len(lista_vm)
+    print(f"Velocidade média geral: {media_geral:.2f} km/h\n")
+
 def escolhas_menu () :
     while True:
         try: 
