@@ -1,12 +1,12 @@
 import os
-import random
+import random   
 
 Arquivo_treino = 'Treino.txt'
 
 data_treino = []
 lista_vm = []
 
-def menu ():
+def menu () :
     limpaMenu()
     print ("==== Bem vindo ao menu! ====")
     print ("1 - Adicionar treino.") #feito
@@ -16,7 +16,8 @@ def menu ():
     print ("5 - Excluir treinos.") #faltando
     print ("6 - Definir metas.") #faltando
     print ("7 - Sujestões de treinos.") #faltando
-    print ("8 - Sair.") #faltando
+    print ("8 - Sair.") #feito
+    print ("9 - Visualizar velocidade média.") #feito
     
     return input("Escolha uma opção: ")
 
@@ -25,33 +26,48 @@ def limpaMenu () :
 
 def adicionar () :
     data = input ("Digite a data do treino (dd/mm/aa) : ")
+    data_treino.append(data)
     distancia = input ("Digite a distãncia em quilômetros : ")
     tempo = input ("Digite o tempo em minutos : ")
-    local = input ("Digite o local do treino :" )
+    local = input ("Digite o local do treino : ")
     condicoes = input ("Informe as condições climaticas da data do treino: ")
-    treino = f"Data: {data}, Distância: {distancia} 2km, Tempo: {tempo} min, Local: {local}, Condições: {condicoes}\n"
-
+    nova_distancia = float(distancia)
+    novo_tempo = int(tempo)
+    vm_ind = float(nova_distancia/(novo_tempo/60))
+    lista_vm.append(vm_ind)
+    
+    treino = f"Data: {data}, Distância: {distancia}km, Tempo: {tempo} min, Local: {local}, Condições: {condicoes}, Velocidade Média: {vm_ind:.2f} km/h \n"
     print(treino)
 
-    with open(Arquivo_treino, "a") as file:
+    with open(Arquivo_treino, "a" ,encoding = "utf8") as file:
         file.write(treino)
 
-    print ("Treino adicionado! ")
+    with open(Arquivo_treino, "r", encoding="utf8") as file:
+        num_linha = len(file.readlines())
+
+    print(f"Treino adicionado! Agora existem {num_linha} treinos registrados.\n")
 
 def visualizar () :
     print ("==== Treinos ====")
     try:
-        with open(Arquivo_treino, "r") as file:
-            for linha in file:
-                data, distancia, tempo, local, condicoes = linha.strip().split(',')
-                print(f"{data}, {distancia} km, {tempo}, {local}, {condicoes}")
+        with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
+            linhas = file.readlines()
+            if not linhas:  
+                print("Nenhum treino cadastrado ainda.")
+            else:
+              for linha in linhas:
+                    try:
+                        data, distancia, tempo, local, condicoes, vm_ind = linha.strip().split(',')
+                        print(f"Data: {data}, Distância: {distancia} km, Tempo: {tempo}, Local: {local}, Condições: {condicoes}, Velocidade Média: {vm_ind} km/h ")
+                    except ValueError:
+                        print("Erro no formato dos dados de um treino. Verifique o arquivo.")
     except FileNotFoundError:
         print("Nenhum treino cadastrado ainda.")
 
 def atualizar () :
     dataTreino = input ("Digite a data do treino que deseja modificar (dd/mm/aa): ")
     try :
-        with open(Arquivo_treino, "r") as file:
+        with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
             for treino in dataTreino :  
                 if treino["data"] == dataTreino :
                     resposta = input("Digite S ou N caso queira modificar a Data: ").upper()
@@ -93,7 +109,7 @@ def filtrar () :
     escolha = input ("Deseja filtrar por por (1) Distância ou (2) Tempo ?/n:")
     escolha2 = float (input("Digite o valor do filtro/n : "))
 
-    with open(Arquivo_treino, "r") as file:
+    with open(Arquivo_treino, "r" ,encoding = "utf8") as file:
         for t in Arquivo_treino :
             data, distancia, tempo, local, condicoes = Arquivo_treino.sptrip().split(',')
             distancia = float (distancia)
@@ -101,7 +117,7 @@ def filtrar () :
             tempoT = tempoH * 60 + tempoM
 
             if escolha == "1" and distancia >= escolha2 :
-                print (f"Data: {data}, Distância 2: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
+                print (f"Data: {data}, Distância: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
             elif escolha2 == "2" and tempoT <= escolha2 :
                 print (f"Data: {data}, Distância: {distancia}, Tempo: {tempoH}:{tempoM}, Local: {local}, Condições: {condicoes}")
 
@@ -112,19 +128,19 @@ def excluir () :
         if not treinos:
             print('Nenhum treino encontrado!')
             return
-
+        
         dataparaexcluir = input('Digite uma data de treino que deseja excluir (dd/mm/aa):  ').strip()
         treinos_atualizados = [treino for treino in treinos if dataparaexcluir not in treino]
 
         if len (treinos) == len(treinos_atualizados):
             print(f'Nenhum treino encontrado com a data: {dataparaexcluir}')
             return
-
+        
         with open(Arquivo_treino, 'w', encoding='utf8') as file:
             file.writelines(treinos_atualizados)
-
+        
         print(f'Treino com a data: {dataparaexcluir} excluído com sucesso!')
-
+    
     except FileNotFoundError:
         print('Arquivo de treino não encontrado.')
     except ValueError:
@@ -166,8 +182,9 @@ def velocidade () :
     
     media_geral = sum(lista_vm) / len(lista_vm)
     print(f"Velocidade média geral: {media_geral:.2f} km/h\n")
+    
 
-def escolhas_menu () :
+def escolhas_menu () :  
     while True:
         try: 
             opcao = menu()
@@ -185,13 +202,19 @@ def escolhas_menu () :
                 metas()
             elif opcao == '7' :
                 sugestoes()
+            elif opcao == '9':
+                velocidade()    
             elif opcao == '8' :
                 print("Saindo do programa...")
+                os.system("exit")
                 break
+            else: 
+                print("\nOpção inválida. Tente novamente...")
+            
         except ValueError :
             print ("Opção inexistente.")
             print ("Digite de 1 à 8 para acessar as opções.")      
-        input("Pressione qualquer tecla para continuar")
-
+        input("====> Pressione qualquer tecla para continuar <====")
+    
 if __name__ == "__main__":
     escolhas_menu()
