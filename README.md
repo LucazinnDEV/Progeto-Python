@@ -21,3 +21,24 @@ digitando o número correspondente e pressione Enter.
 3. O sistema não possui interface gráfica e funciona apenas no terminal.
 4. Caso o arquivo de treino seja alterado manualmente, erros de leitura podem ocorrer.
 
+# Funcionalidades
+0. Sair:
+- Sair e fechar o programa.
+1. Adicionar Treino:
+- Registre um novo treino informando data, distância, tempo, local e condições climáticas.
+2. Visualizar Treinos:
+- Veja todos os treinos registrados no sistema.
+3.Definir Metas:
+-Utilize este recurso para adicionar uma meta pessoal de treino.
+4. Atualizar Treino:
+- Modifique as informações de um treino existente.
+5. Filtrar Treinos:
+- Filtre treinos por distância mínima ou tempo máximo.
+6. Excluir Treino:
+- Apague um treino registrado pelo sistema.
+7. Visualizar Metas:
+- Veja todas as suas metas definidas.
+8. Sugestões de Treinos:
+- Receba sugestões aleatórias para variar sua rotina.
+9. Velocidade Média dos Treinos :
+- Calcule a velocidade média geral dos treinos registrados.
